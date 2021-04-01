@@ -56,13 +56,14 @@ public class LauncherAppState {
 //            Logg.loge("-->name:" + name + ";pkg:" + pkg + ";cls:" + cls);
             sortAppsList(resolveInfo);
         }
+//        Logg.loge("--> blackApps:" + blackApps.size()  + " ; whiteApps :" + whiteApps.size());
         return launcherAppState;
     }
 
     private void sortAppsList(ResolveInfo resolveInfo) {
         ActivityInfo info = resolveInfo.activityInfo;
-        String cls = info.name;
-        if (Arrays.asList(AppsConfigs.blackApps).contains(cls)) {
+        String pkg = info.packageName;
+        if (Arrays.asList(AppsConfigs.blackApps).contains(pkg)) {
             blackApps.add(resolveInfo);
         } else {
             whiteApps.add(resolveInfo);

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class AppsConfigs {
 
+    public static String YLauncher_PackageName = "com.yuneec.ylauncher";
     public static String DataPilot_PackageName = "com.yuneec.datapilot";
     public static String H520C_PackageName = "com.yuneec.android.h520c";
 
@@ -14,8 +15,7 @@ public class AppsConfigs {
     ));
 
     public static String[] blackApps = new String[]{
-            "com.yuneec.ylauncher.YLauncherActivity", //Y桌面
-            "com.android.calendar.homepage.AllInOneActivity", //日历
+            YLauncher_PackageName,
     };
 
     /*
