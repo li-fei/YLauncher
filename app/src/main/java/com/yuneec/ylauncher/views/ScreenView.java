@@ -27,7 +27,7 @@ public class ScreenView extends FrameLayout {
     private int wallpaper = R.drawable.wallpaper_1;
     private ImageView imageView;
     private Random random = new Random();
-    private static final int TRANSLATE_DURATION = 16000;//ms
+    private static final int TRANSLATE_DURATION = 10 * 1000;//ms
     private int translateX, translateY;//px
     private static final int DELAY = 2 * 60 * 1000;//ms
     private boolean firstRun = true;
@@ -53,15 +53,11 @@ public class ScreenView extends FrameLayout {
         }
     };
 
-    private void step0() {//init view1
-        translateX = -random.nextInt(200);
-        translateY = -random.nextInt(100);
-        if (translateX > -100) {
-            translateX = 200 + translateX;
-        }
-        if (translateY > -50) {
-            translateY = 100 + translateY;
-        }
+    private void step0() {
+        int max_x = 230, min_x = -230;
+        int max_y = 130, min_y = -130;
+        translateX = random.nextInt(max_x - min_x) + min_x;
+        translateY = random.nextInt(max_y - min_y) + min_y;
         imageView.animate().translationXBy(-translateX)
                 .withLayer()
                 .translationYBy(-translateY)
