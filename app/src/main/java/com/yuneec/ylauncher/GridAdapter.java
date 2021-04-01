@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yuneec.ylauncher.utils.Logg;
 import com.yuneec.ylauncher.views.MenuPopupWindow;
 
 import java.util.List;
@@ -102,6 +103,13 @@ class GridAdapter extends RecyclerView.Adapter<GridAdapter.Holder> {
         }
         menuPopupWindow = new MenuPopupWindow(context, pkg, menu1, menu2);
         menuPopupWindow.showPopupWindow(itemView);
+    }
+
+    public void dismissAppMenu(){
+        if (menuPopupWindow != null && menuPopupWindow.isShowing()){
+            menuPopupWindow.dismiss();
+            menuPopupWindow = null;
+        }
     }
 
 }

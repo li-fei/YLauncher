@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.yuneec.ylauncher.utils.AppsPopMenuManager;
 import com.yuneec.ylauncher.utils.LauncherAppState;
 import com.yuneec.ylauncher.R;
 import com.yuneec.ylauncher.utils.ToastUtil;
@@ -175,6 +176,6 @@ public class MenuPopupWindow extends PopupWindow {
     }
 
     private void menuItemAction(String menu) {
-        ToastUtil.getInstance().toastShow(context, packageName + "," + menu);
+        AppsPopMenuManager.getInstance().setAppsMenu(context, packageName, menu);
     }
 }

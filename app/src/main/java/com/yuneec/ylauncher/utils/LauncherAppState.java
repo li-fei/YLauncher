@@ -34,7 +34,7 @@ public class LauncherAppState {
         return launcherAppState;
     }
 
-    public void init(Context context) {
+    public LauncherAppState init(Context context) {
         this.context = context;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mLauncherApps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
@@ -56,7 +56,7 @@ public class LauncherAppState {
 //            Logg.loge("-->name:" + name + ";pkg:" + pkg + ";cls:" + cls);
             sortAppsList(resolveInfo);
         }
-
+        return launcherAppState;
     }
 
     private void sortAppsList(ResolveInfo resolveInfo) {

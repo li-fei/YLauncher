@@ -20,14 +20,18 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yuneec.ylauncher.utils.Brightness;
 import com.yuneec.ylauncher.utils.HomeListen;
 import com.yuneec.ylauncher.utils.LauncherAppState;
 import com.yuneec.ylauncher.utils.Logg;
+import com.yuneec.ylauncher.utils.SharedPreUtil;
 import com.yuneec.ylauncher.utils.ToastUtil;
 import com.yuneec.ylauncher.views.ScreenView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class YLauncherActivity extends BaseActivity implements View.OnClickListener {
@@ -48,15 +52,14 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
     private IntentFilter mIntentFilter;
     private RecyclerView recyclerView;
     private GridAdapter gridAdapter;
-    private List<ResolveInfo> showApps;
+    private ArrayList<ResolveInfo> showApps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Logg.loge("onCreate()");
+//        Logg.loge("onCreate()");
         setContentView(R.layout.activity_launcher);
-        LauncherAppState.getInstance().init(this);
-        showApps = LauncherAppState.getInstance().getWhiteApps();
+        showApps = LauncherAppState.getInstance().init(this).getWhiteApps();
         init();
         initReceiverYuneec();
         initHomeListen();
@@ -67,6 +70,9 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         super.onResume();
 //        Logg.loge("onResume()");
         mHomeListen.start();
+//        if (SharedPreUtil.getApps(this).size() > 0){
+//            showApps = SharedPreUtil.getApps(this);
+//        }
     }
 
     @Override
@@ -74,6 +80,7 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         super.onPause();
 //        Logg.loge("onPause()");
         mHomeListen.stop();
+//        SharedPreUtil.saveApps(this,showApps);
     }
 
     private HomeListen mHomeListen = null;
@@ -116,6 +123,9 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
             gridAdapter = new GridAdapter(this,showApps);
             recyclerView.setAdapter(gridAdapter);
         }
+//        NewItemTouchHelper helper = new NewItemTouchHelper(this, gridAdapter, showApps);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(helper);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
         handBrightness();
         launcherViewModel = new ViewModelProvider(this).get(LauncherViewModel.class);
         launcherViewModel.number++;
@@ -177,10 +187,11 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
-        Logg.loge("onDestroy()");
+//        Logg.loge("onDestroy()");
         super.onDestroy();
         screenView.stopScreen();
         deInitReceiverYuneec();
+//        SharedPreUtil.saveApps(this,showApps);
     }
 
 

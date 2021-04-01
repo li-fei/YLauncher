@@ -35,7 +35,7 @@ public class ToastUtil {
         TextView text = (TextView) view.findViewById(R.id.tv_toast_name);
         text.setText(str);
         toast = new Toast(context);
-        toast.setGravity(Gravity.BOTTOM, 0, 300);
+        toast.setGravity(Gravity.BOTTOM, 0, 200);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(view);
         toast.show();

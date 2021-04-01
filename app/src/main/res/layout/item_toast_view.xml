@@ -22,6 +22,6 @@
         android:layout_marginLeft="15dp"
         android:textSize="20dp"
         android:textColor="@color/drone_connect_btn_click"
-        android:text="V18S-00000000" />
+        android:text="123" />
 
 </RelativeLayout>
