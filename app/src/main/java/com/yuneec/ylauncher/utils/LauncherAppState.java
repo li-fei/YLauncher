@@ -95,6 +95,21 @@ public class LauncherAppState {
         }
     }
 
+    private List<String> getPkgListNew() {
+        List<String> packages = new ArrayList<String>();
+        try {
+            List<PackageInfo> packageInfos = context.getPackageManager().getInstalledPackages(
+                    PackageManager.GET_ACTIVITIES | PackageManager.GET_SERVICES);
+            for (PackageInfo info : packageInfos) {
+                String pkg = info.packageName;
+                packages.add(pkg);
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();;
+        }
+        return packages;
+    }
+
     public void reLoadApps(Context context) {
         init(context);
     }
