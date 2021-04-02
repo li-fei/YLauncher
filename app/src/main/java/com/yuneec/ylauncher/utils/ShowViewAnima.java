@@ -9,6 +9,9 @@ import android.view.animation.AlphaAnimation;
 public class ShowViewAnima {
 
     public static void enterExitAppsView(boolean enter, View firstView, View appsView) {
+        if (!enter && firstView.getVisibility() == View.VISIBLE){
+            return;
+        }
         AnimatorSet animatorSet = new AnimatorSet();
         ObjectAnimator animator1 = ObjectAnimator.ofFloat(enter ? firstView : appsView, "alpha", 1f, 0f);
         ObjectAnimator animator2 = ObjectAnimator.ofFloat(enter ? appsView : firstView, "alpha", 0f, 1f);
