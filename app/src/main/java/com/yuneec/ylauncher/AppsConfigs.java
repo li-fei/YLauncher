@@ -7,6 +7,7 @@ public class AppsConfigs {
 
     public static String YLauncher_PackageName = "com.yuneec.ylauncher";
     public static String DataPilot_PackageName = "com.yuneec.datapilot";
+    public static String DataPilot_Cls = "com.yuneec.datapilot.QGCActivity";
     public static String H520C_PackageName = "com.yuneec.android.h520c";
 
     public static ArrayList<String[]> AppsList = new ArrayList<String[]>(Arrays.asList(

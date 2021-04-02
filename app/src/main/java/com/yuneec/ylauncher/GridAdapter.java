@@ -33,7 +33,7 @@ class GridAdapter extends RecyclerView.Adapter<GridAdapter.Holder> {
     }
 
     public interface AppListener {
-        void appDelete(String packageName);
+        void appClick(String packageName,String cls);
     }
 
     GridAdapter(Context c, List<ResolveInfo> apps) {
@@ -58,10 +58,9 @@ class GridAdapter extends RecyclerView.Adapter<GridAdapter.Holder> {
         String cls = info.name;
 
         holder.itemView.setOnClickListener(v -> {
-            ComponentName componentName = new ComponentName(pkg, cls);
-            Intent intent = new Intent();
-            intent.setComponent(componentName);
-            context.startActivity(intent);
+            if (appListener != null) {
+                appListener.appClick(pkg, cls);
+            }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

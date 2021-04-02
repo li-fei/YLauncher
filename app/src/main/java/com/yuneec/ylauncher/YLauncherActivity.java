@@ -70,6 +70,7 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 //        Logg.loge("onResume()");
         mHomeListen.start();
 //        if (SharedPreUtil.getApps(this).size() > 0){
@@ -125,6 +126,12 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         recyclerView.setLayoutManager(new GridLayoutManager(this, 6));
         if (showApps.size() > 0) {
             gridAdapter = new GridAdapter(this, showApps);
+            gridAdapter.setAppListener(new GridAdapter.AppListener() {
+                @Override
+                public void appClick(String packageName, String cls) {
+                    goActivity(new Intent().setComponent(new ComponentName(packageName, cls)), true);
+                }
+            });
             recyclerView.setAdapter(gridAdapter);
         }
 //        NewItemTouchHelper helper = new NewItemTouchHelper(this, gridAdapter, showApps);
@@ -147,13 +154,11 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_dataPilot:
-                String DataPilotPkg = AppsConfigs.DataPilot_PackageName;
-                String DataPilotCls = "com.yuneec.datapilot.QGCActivity";
-                if (LauncherAppState.getInstance().isAppInstalled(DataPilotPkg)) {
-                    ComponentName componentName = new ComponentName(DataPilotPkg, DataPilotCls);
-                    startActivity(new Intent().setComponent(componentName));
+                if (LauncherAppState.getInstance().isAppInstalled(AppsConfigs.DataPilot_PackageName)) {
+                    ComponentName componentName = new ComponentName(AppsConfigs.DataPilot_PackageName, AppsConfigs.DataPilot_Cls);
+                    goActivity(new Intent().setComponent(componentName), true);
                 } else {
-                    ToastUtil.getInstance().toastShow(this, "No install DP ...");
+                    ToastUtil.getInstance().toastShow(this, "No Install DataPilot ...");
                 }
                 break;
             case R.id.apps:
@@ -164,12 +169,10 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.settings:
                 Intent intent = new Intent(Settings.ACTION_SETTINGS);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                goActivity(intent, true);
                 break;
             case R.id.btn_wifi:
-                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                goActivity(new Intent(Settings.ACTION_WIFI_SETTINGS), true);
                 break;
             case R.id.brightness_add:
                 setBrightness(true);
@@ -177,6 +180,13 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
             case R.id.brightness_less:
                 setBrightness(false);
                 break;
+        }
+    }
+
+    private void goActivity(Intent intent, boolean anim) {
+        startActivity(intent);
+        if (anim) {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 
