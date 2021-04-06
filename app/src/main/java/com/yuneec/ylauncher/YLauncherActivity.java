@@ -1,8 +1,5 @@
 package com.yuneec.ylauncher;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,30 +8,29 @@ import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yuneec.ylauncher.utils.Brightness;
 import com.yuneec.ylauncher.utils.HomeListen;
 import com.yuneec.ylauncher.utils.LauncherAppState;
 import com.yuneec.ylauncher.utils.Logg;
-import com.yuneec.ylauncher.utils.SharedPreUtil;
 import com.yuneec.ylauncher.utils.ShowViewAnima;
 import com.yuneec.ylauncher.utils.ToastUtil;
 import com.yuneec.ylauncher.views.ScreenView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 public class YLauncherActivity extends BaseActivity implements View.OnClickListener {
 
@@ -70,8 +66,8 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 //        Logg.loge("onResume()");
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         mHomeListen.start();
 //        if (SharedPreUtil.getApps(this).size() > 0){
 //            showApps = SharedPreUtil.getApps(this);
@@ -259,8 +255,14 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         }
     };
 
-    private Handler mHandler = new Handler() {
+    private MyHandler mHandler = new MyHandler(this.getMainLooper(), this);
 
+    private class MyHandler extends Handler {
+        WeakReference<YLauncherActivity> mActivity;
+        public MyHandler(@NonNull Looper looper, YLauncherActivity activity) {
+            super(looper);
+            mActivity = new WeakReference<>(activity);
+        }
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -269,7 +271,7 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
                 gridAdapter.notifyDataSetChanged();
             }
         }
-    };
+    }
 
     private long exitTime = 0;
 
