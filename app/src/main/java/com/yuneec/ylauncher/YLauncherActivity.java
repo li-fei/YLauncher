@@ -25,9 +25,14 @@ import com.yuneec.ylauncher.utils.Brightness;
 import com.yuneec.ylauncher.utils.HomeListen;
 import com.yuneec.ylauncher.utils.LauncherAppState;
 import com.yuneec.ylauncher.utils.Logg;
+import com.yuneec.ylauncher.utils.MessageEvent;
 import com.yuneec.ylauncher.utils.ShowViewAnima;
 import com.yuneec.ylauncher.utils.ToastUtil;
 import com.yuneec.ylauncher.views.ScreenView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -57,6 +62,7 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 //        Logg.loge("onCreate()");
         setContentView(R.layout.activity_launcher);
+        EventBus.getDefault().register(this);
         showApps = LauncherAppState.getInstance().init(this).getWhiteApps();
         init();
         initReceiverYuneec();
@@ -266,8 +272,13 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private long exitTime = 0;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        String msg = messageEvent.getMessage();
+        ToastUtil.getInstance().toastShow(this, msg);
+    }
 
+    private long exitTime = 0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -286,6 +297,7 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
     protected void onDestroy() {
 //        Logg.loge("onDestroy()");
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         screenView.stopScreen();
         deInitReceiverYuneec();
 //        SharedPreUtil.saveApps(this,showApps);

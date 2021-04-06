@@ -2,6 +2,8 @@ package com.yuneec.ylauncher.utils;
 
 import android.content.Context;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class AppsPopMenuManager {
 
     private Context context;
@@ -15,7 +17,7 @@ public class AppsPopMenuManager {
     }
 
     public void setAppsMenu(Context context, String packageName, String menu) {
-        ToastUtil.getInstance().toastShow(context, packageName + ":" + menu);
         this.context = context;
+        EventBus.getDefault().post(new MessageEvent(packageName + ":" + menu));
     }
 }
