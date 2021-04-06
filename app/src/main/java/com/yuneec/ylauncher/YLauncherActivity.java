@@ -179,13 +179,6 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private void goActivity(Intent intent, boolean anim) {
-        startActivity(intent);
-        if (anim) {
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        }
-    }
-
     private void handBrightness() {
         brightness_add = findViewById(R.id.brightness_add);
         brightness_less = findViewById(R.id.brightness_less);
@@ -255,7 +248,7 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         }
     };
 
-    private MyHandler mHandler = new MyHandler(this.getMainLooper(), this);
+    private MyHandler mHandler = new MyHandler(Looper.myLooper(), this);
 
     private class MyHandler extends Handler {
         WeakReference<YLauncherActivity> mActivity;
