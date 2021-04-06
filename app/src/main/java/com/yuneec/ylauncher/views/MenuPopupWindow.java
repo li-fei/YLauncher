@@ -20,7 +20,10 @@ import androidx.core.content.ContextCompat;
 import com.yuneec.ylauncher.utils.AppsPopMenuManager;
 import com.yuneec.ylauncher.utils.LauncherAppState;
 import com.yuneec.ylauncher.R;
+import com.yuneec.ylauncher.utils.MessageEvent;
 import com.yuneec.ylauncher.utils.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class MenuPopupWindow extends PopupWindow {
 
@@ -169,10 +172,7 @@ public class MenuPopupWindow extends PopupWindow {
     }
 
     private void gotoAppDetailIntent(String packageName) {
-        Intent intent = new Intent();
-        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + packageName));
-        context.startActivity(intent);
+        EventBus.getDefault().post(new MessageEvent(packageName, MessageEvent.AppDetail));
     }
 
     private void menuItemAction(String menu) {

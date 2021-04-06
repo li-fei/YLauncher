@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,12 +16,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.yuneec.ylauncher.utils.Brightness;
 import com.yuneec.ylauncher.utils.HomeListen;
 import com.yuneec.ylauncher.utils.LauncherAppState;
@@ -29,11 +28,9 @@ import com.yuneec.ylauncher.utils.MessageEvent;
 import com.yuneec.ylauncher.utils.ShowViewAnima;
 import com.yuneec.ylauncher.utils.ToastUtil;
 import com.yuneec.ylauncher.views.ScreenView;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -273,9 +270,17 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent messageEvent){
+    public void onMessageEvent(MessageEvent messageEvent) {
         String msg = messageEvent.getMessage();
-        ToastUtil.getInstance().toastShow(this, msg);
+        int flag = messageEvent.getFLAG();
+        if (flag == MessageEvent.AppDetail){
+            Intent intent = new Intent();
+            intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + msg));
+            goActivity(intent, true);
+        }else {
+            ToastUtil.getInstance().toastShow(this, msg);
+        }
     }
 
     private long exitTime = 0;
