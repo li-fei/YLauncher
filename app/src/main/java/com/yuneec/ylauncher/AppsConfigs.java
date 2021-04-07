@@ -11,11 +11,13 @@ public class AppsConfigs {
 
     private static Context context;
     private static AppsConfigs appsConfigs;
+    public static ArrayList<String[]> AppsList;
 
     public static AppsConfigs getInstance(Context c) {
         context = c;
         if (appsConfigs == null) {
             appsConfigs = new AppsConfigs();
+            initAppsList();
         }
         return appsConfigs;
     }
@@ -29,10 +31,12 @@ public class AppsConfigs {
     public static String DataPilot_Cls = "com.yuneec.datapilot.QGCActivity";
     public static String H520C_PackageName = "com.yuneec.android.h520c";
 
-    public static ArrayList<String[]> AppsList = new ArrayList<String[]>(Arrays.asList(
-            new String[]{DataPilot_PackageName, getString(R.string.take_off), getString(R.string.land)},
-            new String[]{H520C_PackageName, "一键连接 ...", "一键起飞 ..."}
-    ));
+    private static void initAppsList() {
+        AppsList = new ArrayList<String[]>(Arrays.asList(
+                new String[]{DataPilot_PackageName, getString(R.string.take_off), getString(R.string.land)},
+                new String[]{H520C_PackageName, getString(R.string.land), "一键起飞 ..."}
+        ));
+    }
 
     public static String[] blackApps = new String[]{
             YLauncher_PackageName,
