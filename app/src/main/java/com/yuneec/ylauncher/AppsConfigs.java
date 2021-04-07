@@ -17,8 +17,8 @@ public class AppsConfigs {
         context = c;
         if (appsConfigs == null) {
             appsConfigs = new AppsConfigs();
-            initAppsList();
         }
+        initAppsList();
         return appsConfigs;
     }
 

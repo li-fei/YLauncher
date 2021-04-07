@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,9 +23,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuneec.ylauncher.utils.Brightness;
 import com.yuneec.ylauncher.utils.HomeListen;
+import com.yuneec.ylauncher.utils.LanguageUtil;
 import com.yuneec.ylauncher.utils.LauncherAppState;
 import com.yuneec.ylauncher.utils.Logg;
 import com.yuneec.ylauncher.utils.MessageEvent;
+import com.yuneec.ylauncher.utils.SharedPreUtil;
 import com.yuneec.ylauncher.utils.ShowViewAnima;
 import com.yuneec.ylauncher.utils.ToastUtil;
 import com.yuneec.ylauncher.views.ScreenView;
@@ -61,9 +64,11 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_launcher);
         EventBus.getDefault().register(this);
         showApps = LauncherAppState.getInstance().init(this).getWhiteApps();
+        SharedPreUtil.saveString(this,"language", LanguageUtil.getLanguage());
         init();
         initReceiverYuneec();
         initHomeListen();
+        mHomeListen.start();
     }
 
     @Override
@@ -71,7 +76,6 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
         super.onResume();
 //        Logg.loge("onResume()");
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        mHomeListen.start();
 //        if (SharedPreUtil.getApps(this).size() > 0){
 //            showApps = SharedPreUtil.getApps(this);
 //        }
@@ -81,7 +85,6 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
 //        Logg.loge("onPause()");
-        mHomeListen.stop();
 //        SharedPreUtil.saveApps(this,showApps);
     }
 
@@ -94,7 +97,6 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
             public void onHomeBtnPress() {
                 ShowViewAnima.enterExitAppsView(false, launcher_fisrt, launcher_apps);
             }
-
             @Override
             public void onHomeBtnLongPress() {
             }
@@ -280,6 +282,18 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
             goActivity(intent, true);
         }else {
             ToastUtil.getInstance().toastShow(this, msg);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        String lastLang = SharedPreUtil.getString(this,"language");
+        String lang = LanguageUtil.getLanguage();
+        SharedPreUtil.saveString(this,"language", LanguageUtil.getLanguage());
+        if (!lang.equals(lastLang)) {
+            LanguageUtil.initAppLanguage(this);
+            mHandler.sendEmptyMessage(0);
         }
     }
 
