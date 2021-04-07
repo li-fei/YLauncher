@@ -157,7 +157,7 @@ public class YLauncherActivity extends BaseActivity implements View.OnClickListe
                     ComponentName componentName = new ComponentName(AppsConfigs.DataPilot_PackageName, AppsConfigs.DataPilot_Cls);
                     goActivity(new Intent().setComponent(componentName), true);
                 } else {
-                    ToastUtil.getInstance().toastShow(this, "No Install DataPilot ...");
+                    ToastUtil.getInstance().toastShow(this, "None DataPilot App...");
                 }
                 break;
             case R.id.apps:
