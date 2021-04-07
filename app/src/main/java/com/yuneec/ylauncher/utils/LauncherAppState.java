@@ -36,6 +36,7 @@ public class LauncherAppState {
 
     public LauncherAppState init(Context context) {
         this.context = context;
+        AppsConfigs.getInstance(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mLauncherApps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
             mLauncherApps.registerCallback(new WrappedCallback());

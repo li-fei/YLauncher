@@ -1,9 +1,28 @@
 package com.yuneec.ylauncher;
 
+import android.content.Context;
+
+import com.yuneec.ylauncher.utils.AppsPopMenuManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AppsConfigs {
+
+    private static Context context;
+    private static AppsConfigs appsConfigs;
+
+    public static AppsConfigs getInstance(Context c) {
+        context = c;
+        if (appsConfigs == null) {
+            appsConfigs = new AppsConfigs();
+        }
+        return appsConfigs;
+    }
+
+    public static String getString(int id) {
+        return context.getResources().getString(id);
+    }
 
     public static String YLauncher_PackageName = "com.yuneec.ylauncher";
     public static String DataPilot_PackageName = "com.yuneec.datapilot";
@@ -11,7 +30,7 @@ public class AppsConfigs {
     public static String H520C_PackageName = "com.yuneec.android.h520c";
 
     public static ArrayList<String[]> AppsList = new ArrayList<String[]>(Arrays.asList(
-            new String[]{DataPilot_PackageName, "起飞 ..."},
+            new String[]{DataPilot_PackageName, getString(R.string.take_off), getString(R.string.land)},
             new String[]{H520C_PackageName, "一键连接 ...", "一键起飞 ..."}
     ));
 

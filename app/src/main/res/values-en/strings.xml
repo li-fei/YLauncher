@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">YLauncher</string>
+    <string name="take_off">Take Off</string>
+    <string name="land">Land</string>
 </resources>
